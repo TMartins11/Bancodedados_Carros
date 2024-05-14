@@ -7,7 +7,7 @@
                 2- Busca de um veículo pela placa, com opção de exclusão da base de dados;
                 3- Busca de veículos pelo tipo;
                 4- Busca de veículos pelo câmbio;
-                5- Busca de veículos por uma faixa de valores;
+                5- Busca de veículos por umaa faixa de valores;
                 6- Relatório do banco de dados.
 
     modelo, marca, tipo, ano, quilometragem, potência do motor, combustível, câmbio, direção, cor, portas, placa e valor do veículo. 
@@ -356,6 +356,7 @@ int main(){
                 
                 // Veículo 1.0 mais barato + financiamento em 60 meses
                 int k = qtdcarros - 1;
+                int valor_mb;
                 for( i = 0; i < qtdcarros; i++){
                     if(tabela[i].potencia == 1.0){
                         if(tabela[i].valor <= tabela[k].valor){
@@ -378,12 +379,37 @@ int main(){
                 cout << " " << tabela[k].placa << endl;
 
                 // Foi considerado uma taxa de 1.63% ao mês em juros, conforme a média de instituições privadas em 2024
-                tabela[k].valor = (tabela[k].valor * 1.63) / 60;
-                cout << endl << "Saindo em um financiamento total por 60 prestações de: R$" << tabela[k].valor << endl;
-                break;
+                valor_mb = (tabela[k].valor * 1.63) / 60;
+                cout << endl << "Saindo em um financiamento total por 60 prestações de: R$" << valor_mb << endl;
 
                 // Veículo mais caro com direção hidraúlica, câmbio automático + valor do seguro estimado
+                int l = qtdcarros - 1;
+                int valor_mc;
+                for( i = 0; i < qtdcarros; i++){
+                    if(tabela[i].direcao == "Hidráulica" && tabela[i].cambio == "Automático"){
+                        if(tabela[i].valor >= tabela[l].valor){
+                            l = i;
+                        }
+                    }
+                }
+                cout << endl << "O veículo completo com direção hidráulica e câmbio automático mais caro é o:" << endl;
+                cout << endl << tabela[l].modelo;
+                cout << " " << tabela[l].marca;
+                cout << " " << tabela[l].tipo;
+                cout << " " << tabela[l].ano;
+                cout << " " << tabela[l].quilometragem;
+                cout << " " << tabela[l].potencia;
+                cout << " " << tabela[l].combustivel;
+                cout << " " << tabela[l].cambio;
+                cout << " " << tabela[l].direcao;
+                cout << " " << tabela[l].cor;
+                cout << " " << tabela[l].portas;
+                cout << " " << tabela[l].placa << endl;
 
+                // Foi considerada uma taxa média de 6,6% sobre o valor total do carro como taxa do seguro
+                valor_mc = (tabela[l].valor * 0.066) + tabela[l].valor;
+                cout << endl << "Saindo, já com o seguro imbutido, por um preço de: R$" << valor_mc << endl;
+                break;
             }
         }
     }while(opcao != 5); 
