@@ -7,7 +7,7 @@
                 2- Busca de um veículo pela placa, com opção de exclusão da base de dados;
                 3- Busca de veículos pelo tipo;
                 4- Busca de veículos pelo câmbio;
-                5- Busca de veículos por um faixa de valores;
+                5- Busca de veículos por uma faixa de valores;
                 6- Relatório do banco de dados.
 
     modelo, marca, tipo, ano, quilometragem, potência do motor, combustível, câmbio, direção, cor, portas, placa e valor do veículo. 
@@ -27,16 +27,16 @@ typedef struct{
     string modelo;
     string marca;
     string tipo;
-    string ano;
-    string quilometragem;
-    string potencia;
+    int ano;
+    float quilometragem;
+    float potencia;
     string combustivel;
     string cambio;
     string direcao;
     string cor;
-    string portas;
+    int portas;
     string placa;
-    string valor;
+    float valor;
 } Carro;
 
 int main(){
@@ -75,49 +75,42 @@ int main(){
 
     // Menu para direcionar os usuários
     int opcao = 0;
-    cout << "Base de Dados de Veículos" << endl;
-    cout << endl << "Opções disponíveis:";
-    cout << endl << "1 - Exibir Base de Dados" << endl << "2 - Incluir um veículo" << endl << "3 - Buscar um Veículo";
-    cout << endl << "4 - Exibir Relatório" << endl << "5 - Sair" << endl;
-    cout << endl << "Escolha a opção desejada: ";
-    cin >> opcao;
-    while(opcao > 5 || opcao <=0){
-        cout << endl << "Opção inválida! Insira novamente: ";
+    
+    do{
+        cout << endl << "Base de Dados de Veículos" << endl;
+        cout << endl << "Opções disponíveis:";
+        cout << endl << "1 - Exibir Base de Dados" << endl << "2 - Incluir um veículo" << endl << "3 - Buscar um Veículo";
+        cout << endl << "4 - Exibir Relatório" << endl << "5 - Sair" << endl;
+        cout << endl << "Escolha a opção desejada: ";
         cin >> opcao;
-    }
+        while(opcao > 5 || opcao <=0){
+            cout << endl << "Opção inválida! Insira novamente: ";
+            cin >> opcao;
+        }
 
-    while(opcao != 5){
         switch(opcao){
             case 1:
             {
                 // Exibição da Base de Dados
                 cout << endl << "Início da Base de Dados" << endl;
                 for(int i = 0; i < qtdcarros; i++){
-                    cout << endl << tabela[i].modelo;
-                    cout << " " << tabela[i].marca;
-                    cout << " " << tabela[i].tipo;
-                    cout << " " << tabela[i].ano;
-                    cout << " " << tabela[i].quilometragem;
-                    cout << " " << tabela[i].potencia;
-                    cout << " " << tabela[i].combustivel;
-                    cout << " " << tabela[i].cambio;
-                    cout << " " << tabela[i].direcao;
-                    cout << " " << tabela[i].cor;
-                    cout << " " << tabela[i].portas;
-                    cout << " " << tabela[i].placa;
-                    cout << " " << tabela[i].valor;
+                    if(tabela[i].valido == true){
+                        cout << endl << tabela[i].modelo;
+                        cout << " " << tabela[i].marca;
+                        cout << " " << tabela[i].tipo;
+                        cout << " " << tabela[i].ano;
+                        cout << " " << tabela[i].quilometragem;
+                        cout << " " << tabela[i].potencia;
+                        cout << " " << tabela[i].combustivel;
+                        cout << " " << tabela[i].cambio;
+                        cout << " " << tabela[i].direcao;
+                        cout << " " << tabela[i].cor;
+                        cout << " " << tabela[i].portas;
+                        cout << " " << tabela[i].placa;
+                        cout << " " << tabela[i].valor;
+                    }
                 }
                 cout << endl << endl << "Fim da Base de Dados" << endl;
-
-                cout << endl << "Opções disponíveis:";
-                cout << endl << "1 - Exibir Base de Dados" << endl << "2 - Incluir um veículo" << endl << "3 - Buscar um Veículo";
-                cout << endl << "4 - Exibir Relatório" << endl << "5 - Sair" << endl;
-                cout << endl << "Escolha a opção desejada: ";
-                cin >> opcao;
-                while(opcao > 5 || opcao <=0){
-                    cout << endl << "Opção inválida! Insira novamente: ";
-                    cin >> opcao;
-                }
                 break;
             }
             case 2:
@@ -154,20 +147,246 @@ int main(){
                 cout << endl << "Veículo adicionado com sucesso!" << endl;
                 qtdcarros++;
                 j += 1;
-                
-                cout << endl << "Opções disponíveis:";
-                cout << endl << "1 - Exibir Base de Dados" << endl << "2 - Incluir um veículo" << endl << "3 - Buscar um Veículo";
-                cout << endl << "4 - Exibir Relatório" << endl << "5 - Sair" << endl;
-                cout << endl << "Escolha a opção desejada: ";
-                cin >> opcao;
-                while(opcao > 5 || opcao <=0){
-                    cout << endl << "Opção inválida! Insira novamente: ";
-                    cin >> opcao;
-                }
                 break;
             }
+            case 3:
+            {
+                // Buscar um Veículo
+                int opbusca;
+                string exc_vec;
+                do{
+                    cout << endl << "Opções de Busca:" << endl << "1 - Pela placa";
+                    cout << endl << "2 - Pelo tipo" << endl << "3 - Pelo câmbio" << endl << "4 - Por faixas de preço";
+                    cout << endl << "5 - Sair" << endl;
+                    cout << endl << "Insira a opção desejada: ";
+                    cin >> opbusca;
+                    while(opbusca > 5 || opbusca <= 0){
+                        cout << endl << "Opção inválida!Insira novamente: ";
+                        cin >> opbusca;
+                    }
+                    switch(opbusca){
+                        case 1:
+                        {
+                            // Buscar Veículo pela Placa
+                            string enc_placa;
+                            int placa_enc = -1;
+                            int vec_enc = 0;
+                            cout << endl << "Insira a placa do veículo que deseja encontrar: ";
+                            cin >> enc_placa;
+                            for(i = 0; i < qtdcarros; i++){
+                                if(tabela[i].placa == enc_placa){
+                                    vec_enc = i;
+                                }
+                            }
+                            if(vec_enc >= 0){
+                                cout << endl << "O veículo encontrado foi:" << endl;
+                                cout << endl << tabela[vec_enc].modelo;
+                                cout << " " << tabela[vec_enc].marca;
+                                cout << " " << tabela[vec_enc].tipo;
+                                cout << " " << tabela[vec_enc].ano;
+                                cout << " " << tabela[vec_enc].quilometragem;
+                                cout << " " << tabela[vec_enc].potencia;
+                                cout << " " << tabela[vec_enc].combustivel;
+                                cout << " " << tabela[vec_enc].cambio;
+                                cout << " " << tabela[vec_enc].direcao;
+                                cout << " " << tabela[vec_enc].cor;
+                                cout << " " << tabela[vec_enc].portas;
+                                cout << " " << tabela[vec_enc].placa;
+                                cout << " " << tabela[vec_enc].valor << endl;
+                            
+                                cout << endl << "Deseja excluir o veículo encontrado?: ";
+                                cin >> exc_vec;
+                            }
+                            
+                            if(exc_vec == "Sim" || exc_vec == "SIM" || exc_vec == "sim"){
+                                tabela[vec_enc].valido = false;
+                                qtdcarros--;
+                                cout << endl << "O veículo foi excluído com sucesso!" << endl;
+                            }else{
+                                cout << endl << "O veículo procurado não foi encontrado!" << endl;
+                            }
+                            break;
+                        }
+                        case 2:
+                        {
+                            // Buscar veículo pelo tipo
+                            string enc_tipo;
+                            int tipo_enc = -1;
+                            cout << endl << "Insira o tipo do(s) veículo(s) que deseja encontrar: ";
+                            cin >> enc_tipo;
+                            cout << endl << endl << "O(s) veículo(s) encontrado(s) foi(foram):" << endl;
+                            for(i = 0; i < qtdcarros; i++){
+                                if(enc_tipo == tabela[i].tipo){
+                                    cout << endl << tabela[i].modelo;
+                                    cout << " " << tabela[i].marca;
+                                    cout << " " << tabela[i].tipo;
+                                    cout << " " << tabela[i].ano;
+                                    cout << " " << tabela[i].quilometragem;
+                                    cout << " " << tabela[i].potencia;
+                                    cout << " " << tabela[i].combustivel;
+                                    cout << " " << tabela[i].cambio;
+                                    cout << " " << tabela[i].direcao;
+                                    cout << " " << tabela[i].cor;
+                                    cout << " " << tabela[i].portas;
+                                    cout << " " << tabela[i].placa;
+                                    cout << " " << tabela[i].valor << endl;
+                                    tipo_enc++;
+                                }
+                            }
+                            
+                            if(tipo_enc <= 0){
+                                cout << endl << "Nenhum veículo com o tipo selecionado foi encontrado!" << endl;
+                            }
+                        
+                            break;
+                        }
+                        case 3:
+                        {
+                            // Buscar veículo pelo câmbio
+                            string enc_cambio;
+                            cout << endl << "Insira o tipo de câmbio do(s) veículo(s) que deseja encontrar: ";
+                            cin >> enc_cambio;
+                            cout << endl << endl << "O(s) veículo(s) encontrado(s) foi(foram):" << endl;
+                            for(i = 0; i < qtdcarros; i++){
+                                if(enc_cambio == tabela[i].cambio){
+                                    cout << endl << tabela[i].modelo;
+                                    cout << " " << tabela[i].marca;
+                                    cout << " " << tabela[i].tipo;
+                                    cout << " " << tabela[i].ano;
+                                    cout << " " << tabela[i].quilometragem;
+                                    cout << " " << tabela[i].potencia;
+                                    cout << " " << tabela[i].combustivel;
+                                    cout << " " << tabela[i].cambio;
+                                    cout << " " << tabela[i].direcao;
+                                    cout << " " << tabela[i].cor;
+                                    cout << " " << tabela[i].portas;
+                                    cout << " " << tabela[i].placa;
+                                    cout << " " << tabela[i].valor << endl;
+                                }
+                            }
+                        
+                            break;
+                        }
+                        case 4:
+                        {
+                            // Buscar veículos por faixa de preço
+                            int p_min = 0, p_max = 0, enc_p = 0;
+                            cout << endl << "Insira o valor mínimo desejado: ";
+                            cin >> p_min;
+                            cout << endl << "Insira o valor máximo desejado: ";
+                            cin >> p_max;
+                            for(i = 0; i < qtdcarros; i++){
+                                if(tabela[i].valor >= p_min && tabela[i].valor <= p_max){
+                                    cout << endl << tabela[i].modelo;
+                                    cout << " " << tabela[i].marca;
+                                    cout << " " << tabela[i].tipo;
+                                    cout << " " << tabela[i].ano;
+                                    cout << " " << tabela[i].quilometragem;
+                                    cout << " " << tabela[i].potencia;
+                                    cout << " " << tabela[i].combustivel;
+                                    cout << " " << tabela[i].cambio;
+                                    cout << " " << tabela[i].direcao;
+                                    cout << " " << tabela[i].cor;
+                                    cout << " " << tabela[i].portas;
+                                    cout << " " << tabela[i].placa;
+                                    cout << " " << tabela[i].valor << endl;
+                                    enc_p++;
+                                }
+                            }
+                            if(enc_p <= 0){
+                                cout << endl << "Nenhum veículo foi encontrado dentro dessa faixa de preço!" << endl;
+                            }
+                            
+                            break;
+                        }
+                    }
+                }while(opbusca != 5);    
+            }
+            case 4:
+            {
+                // Exibir Relatório do Banco de Dados
+                // (% de veículos por tipo)
+                float qtd_hatch = 0, qtd_suv = 0,qtd_pickup = 0,qtd_sedan = 0,qtd_van = 0;
+                cout << endl << "Relatório Banco de Dados" << endl;
+                cout << endl << "Dividindo os veículos por tipos, temos que:" << endl;
+                for(i = 0; i < qtdcarros; i++){
+                    if(tabela[i].tipo == "Hatch" || tabela[i].tipo == "HATCH" || tabela[i].tipo == "hatch"){
+                        qtd_hatch++;
+                    }else if(tabela[i].tipo == "Suv" || tabela[i].tipo == "SUV" || tabela[i].tipo == "suv"){
+                        qtd_suv++;
+                    }else if(tabela[i].tipo == "Pick-up" || tabela[i].tipo == "PICK-UP" || tabela[i].tipo == "pick-up"){
+                        qtd_pickup++;
+                    }else if(tabela[i].tipo == "Sedan" || tabela[i].tipo == "SEDAN" || tabela[i].tipo == "sedan"){
+                        qtd_sedan++;
+                    }else if(tabela[i].tipo == "Van" || tabela[i].tipo == "VAN" || tabela[i].tipo == "van"){
+                        qtd_van++;
+                    }
+                }
+                qtd_hatch = (qtd_hatch / qtdcarros) * 100;
+                qtd_suv = (qtd_suv / qtdcarros) * 100;
+                qtd_pickup = (qtd_pickup / qtdcarros) * 100;
+                qtd_sedan = (qtd_sedan / qtdcarros) * 100;
+                qtd_van = (qtd_van / qtdcarros) * 100;
+
+                cout << endl << "Tipo Hatch: " << qtd_hatch << "%";
+                cout << endl << "Tipo SUV: "  << qtd_suv << "%";
+                cout << endl << "Tipo Pick-Up: " << qtd_pickup << "%";
+                cout << endl << "Tipo Sedan: " << qtd_sedan << "%";
+                cout << endl << "Tipo Van: " << qtd_van << "%" << endl;
+                
+                // Exibindo a % de veículos pelo tipo de combustível
+                float qtd_flex = 0, qtd_diesel = 0, qtd_gasolina = 0;
+                cout << endl << "Dividindo os veículos pelo tipo de combustível, temos:" << endl;
+                for(i = 0; i < qtdcarros; i++){
+                    if(tabela[i].combustivel == "Flex"){
+                        qtd_flex++;
+                    }else if(tabela[i].combustivel == "Diesel"){
+                        qtd_diesel++;
+                    }else if(tabela[i].combustivel == "Gasolina"){
+                        qtd_gasolina++;
+                    }
+                }
+                qtd_flex = (qtd_flex / qtdcarros) * 100;
+                qtd_diesel = (qtd_diesel / qtdcarros) * 100;
+                qtd_gasolina = (qtd_gasolina / qtdcarros) * 100;
+
+                cout << endl << "Flex: " << qtd_flex << "%";
+                cout << endl << "Diesel: " << qtd_diesel << "%";
+                cout << endl << "Gasolina: " << qtd_gasolina << "%" << endl;
+                
+                // Veículo 1.0 mais barato + financiamento em 60 meses
+                int k = qtdcarros - 1;
+                for( i = 0; i < qtdcarros; i++){
+                    if(tabela[i].potencia == 1.0){
+                        if(tabela[i].valor <= tabela[k].valor){
+                            k = i;
+                        }
+                    }
+                }
+
+                cout << endl << "O veículo 1.0 mais barato é o:" << endl;
+                cout << endl << tabela[k].modelo;
+                cout << " " << tabela[k].marca;
+                cout << " " << tabela[k].tipo;
+                cout << " " << tabela[k].ano;
+                cout << " " << tabela[k].quilometragem;
+                cout << " " << tabela[k].combustivel;
+                cout << " " << tabela[k].cambio;
+                cout << " " << tabela[k].direcao;
+                cout << " " << tabela[k].cor;
+                cout << " " << tabela[k].portas;
+                cout << " " << tabela[k].placa << endl;
+
+                // Foi considerado uma taxa de 1.63% ao mês em juros, conforme a média de instituições privadas em 2024
+                tabela[k].valor = (tabela[k].valor * 1.63) / 60;
+                cout << endl << "Saindo em um financiamento total por 60 prestações de: R$" << tabela[k].valor << endl;
+                break;
+
+                // Veículo mais caro com direção hidraúlica, câmbio automático + valor do seguro estimado
+
+            }
         }
-    }
+    }while(opcao != 5); 
 
     return 0;
  }
