@@ -193,17 +193,19 @@ int main(){
                                 cout << " " << tabela[vec_enc].portas;
                                 cout << " " << tabela[vec_enc].placa;
                                 cout << " " << tabela[vec_enc].valor << endl;
-                            
-                                cout << endl << "Deseja excluir o veículo encontrado?: ";
-                                cin >> exc_vec;
+                            }else{
+                                cout << endl << "Nenhum veículo com essa placa foi encontrado!";
+                                break;
                             }
+                            
+                            cout << endl << "Deseja excluir o veículo encontrado?: ";
+                            cin >> exc_vec;
+                            
                             
                             if(exc_vec == "Sim" || exc_vec == "SIM" || exc_vec == "sim"){
                                 tabela[vec_enc].valido = false;
                                 qtdcarros--;
                                 cout << endl << "O veículo foi excluído com sucesso!" << endl;
-                            }else{
-                                cout << endl << "O veículo procurado não foi encontrado!" << endl;
                             }
                             break;
                         }
