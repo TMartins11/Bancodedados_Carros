@@ -220,7 +220,7 @@ int main(){
                             
                            
                             if(vec_enc == 0){
-                                cout << endl << "Nenhum veículo com essa placa foi encontrado!";
+                                cout << endl << "Nenhum veículo com essa placa foi encontrado!" << endl;
                                 break;
                             }
                             
@@ -271,7 +271,7 @@ int main(){
                                 }    
                             }
                             
-                            if(tipo_enc <= 0){
+                            if(tipo_enc < 0){
                                 cout << endl << "Nenhum veículo com o tipo selecionado foi encontrado!" << endl;
                             }
                         
@@ -401,23 +401,28 @@ int main(){
                 cout << endl << "Gasolina: " << qtd_gasolina << "%" << endl;
                 
                 // Veículo 1.0 mais barato + financiamento em 60 meses
-                Carro carro1_0[qtdcarros];
+                Carro carro1_0[TAM];
                 int x = 0;
 
-                for(i = 0; i < qtdcarros; i++){
-                    if(tabela[i].potencia == 1.0){
+                for (int i = 0; i < qtdcarros; i++) {
+                    if (tabela[i].potencia == 1.0 && tabela[i].valido) {
                         carro1_0[x] = tabela[i];
                         x++;
                     }
                 }
 
+                if (x == 0) {
+                    cout << endl << "Nenhum veículo 1.0 encontrado!" << endl;
+                    return 0;
+                }
+
                 int v = 0;
-                for(i = 0; i < x; i++){
-                    if(carro1_0[i].valor < carro1_0[x].valor){
+                for (int i = 1; i < x; i++) {
+                    if (carro1_0[i].valor < carro1_0[v].valor) {
                         v = i;
                     }
                 }
-
+                
                 cout << endl << "O veículo 1.0 mais barato é o:" << endl;
                 cout << endl << carro1_0[v].modelo;
                 cout << " " << carro1_0[v].marca;
@@ -430,54 +435,58 @@ int main(){
                 cout << " " << carro1_0[v].direcao;
                 cout << " " << carro1_0[v].cor;
                 cout << " " << carro1_0[v].portas;
-                cout << " " << carro1_0[v].placa << endl;
+                cout << " " << carro1_0[v].placa;
+                cout << " " << carro1_0[v].valor << endl;
                 
                 // Foi considerado uma taxa de 1.63% ao mês em juros, conforme a média de instituições privadas em 2024
-                int valor_mb = carro1_0[v].valor;
-                float juros = pow((1 + 0.0163), 60) * 0.0163;
-                float parcelas = pow((1 + 0.0163), 60) - 1;
+                float valor_mb = carro1_0[v].valor;
+                float taxa_juros = 0.0163;
+                int num_prestacoes = 60;
+                float juros = pow((1 + taxa_juros), num_prestacoes) * taxa_juros;
+                float parcelas = pow((1 + taxa_juros), num_prestacoes) - 1;
                 float prestacao = valor_mb * (juros / parcelas); 
-                cout << endl << "Saindo em um financiamento total por 60 prestações de: R$" << prestacao << endl;
         
                 // Veículo mais caro com direção hidraúlica, câmbio automático + valor do seguro estimado
-                int l = qtdcarros - 1;
+                int l = -1;
                 int valor_mc;
-                for( i = 0; i < qtdcarros; i++){
-                    if(tabela[i].valido == true){
-                        if(tabela[i].direcao == "Hidráulica" && tabela[i].cambio == "Automático"){
-                            if(tabela[i].valor >= tabela[l].valor){
-                                l = i;
-                            }
+                for(int i = 0; i < qtdcarros; i++){
+                    if(tabela[i].valido == true && tabela[i].direcao == "Hidráulica" && tabela[i].cambio == "Automático"){
+                        if(l == -1 || tabela[i].valor > tabela[l].valor){ 
+                            l = i;
                         }
                     }
                 }
-                cout << endl << "O veículo completo com direção hidráulica e câmbio automático mais caro é o:" << endl;
-                cout << endl << tabela[l].modelo;
-                cout << " " << tabela[l].marca;
-                cout << " " << tabela[l].tipo;
-                cout << " " << tabela[l].ano;
-                cout << " " << tabela[l].quilometragem;
-                cout << " " << tabela[l].potencia;
-                cout << " " << tabela[l].combustivel;
-                cout << " " << tabela[l].cambio;
-                cout << " " << tabela[l].direcao;
-                cout << " " << tabela[l].cor;
-                cout << " " << tabela[l].portas;
-                cout << " " << tabela[l].placa << endl;
 
-                // Foi considerada uma taxa média de 6,6% sobre o valor total do carro como taxa do seguro
-                valor_mc = (tabela[l].valor * 0.066) + tabela[l].valor;
+                // Verifica se um carro válido foi encontrado
+                if(l != -1){
+                    cout << endl << "O veículo completo com direção hidráulica e câmbio automático mais caro é o:" << endl;
+                    cout << endl << tabela[l].modelo;
+                    cout << " " << tabela[l].marca;
+                    cout << " " << tabela[l].tipo;
+                    cout << " " << tabela[l].ano;
+                    cout << " " << tabela[l].quilometragem;
+                    cout << " " << tabela[l].potencia;
+                    cout << " " << tabela[l].combustivel;
+                    cout << " " << tabela[l].cambio;
+                    cout << " " << tabela[l].direcao;
+                    cout << " " << tabela[l].cor;
+                    cout << " " << tabela[l].portas;
+                    cout << " " << tabela[l].placa << endl;
+
+                // Calcula o valor do carro já com o seguro imbutido
+                valor_mc = tabela[l].valor * 1.066;
                 cout << endl << "Saindo, já com o seguro imbutido, por um preço de: R$" << valor_mc << endl;
-                
+                }else {
+                    cout << endl << "Nenhum veículo com direção hidráulica e câmbio automático foi encontrado." << endl;
+                }
+
                 // Quantidade e Média de Quilometragem(veículos com 5 anos ou mais)
                 int mais5_anos = 0;
                 int km_5anos = 0;
                 for(i = 0; i < qtdcarros; i++){
-                    if(tabela[i].valido == true){
-                        if(tabela[i].ano >= 2019){
-                            mais5_anos++;
-                            km_5anos = km_5anos + tabela[i].quilometragem;
-                        }
+                    if(tabela[i].valido == true && tabela[i].ano >= 2019){
+                        mais5_anos++;
+                        km_5anos = km_5anos + tabela[i].quilometragem;
                     }
                 }
                 km_5anos /= mais5_anos;
