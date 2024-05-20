@@ -1,7 +1,7 @@
 /*
-    Projeto AEDS I - Estatística em Base de Dados de Veículos
+    Estatística em Base de Dados de Veículos
 
-    Author: Thiago Martins - 2024.1.08.023
+    Author: Thiago Martins
 
     Requisitos: 1- inclusão de um novo veículo na base de dados;
                 2- Busca de um veículo pela placa, com opção de exclusão da base de dados;
@@ -98,6 +98,9 @@ int main(){
                 cout << endl << "Início da Base de Dados" << endl;
                 for(int i = 0; i < qtdcarros; i++){
                     if(tabela[i].valido == true){
+                        if(tabela[i].modelo == "FIM"){
+                            break;
+                        }
                         cout << endl << tabela[i].modelo;
                         cout << " " << tabela[i].marca;
                         cout << " " << tabela[i].tipo;
@@ -111,6 +114,7 @@ int main(){
                         cout << " " << tabela[i].portas;
                         cout << " " << tabela[i].placa;
                         cout << " " << tabela[i].valor;
+                        
                     }
                 }
                 cout << endl << endl << "Fim da Base de Dados" << endl;
@@ -119,57 +123,87 @@ int main(){
             case 2:
             {
                 // Incluir um Veículo
-                int vec_duplicado = 0;
-                cout << endl << "Incluir um veículo" << endl;
-                cout << endl << "Insira o modelo: ";
-                cin >> tabela[j].modelo;
-                cout << endl << "Insira a marca: ";
-                cin >> tabela[j].marca;
-                cout << endl << "Insira o tipo: ";
-                cin >> tabela[j].tipo;
-                cout << endl << "Insira o ano: ";
-                cin >> tabela[j].ano;
-                cout << endl << "Insira a quilometragem do veículo: ";
-                cin >> tabela[j].quilometragem;
-                cout << endl << "Insira a potência: ";
-                cin >> tabela[j].potencia;
-                cout << endl << "Insira o combustível: ";
-                cin >> tabela[j].combustivel;
-                cout << endl << "Insira o tipo de câmbio: ";
-                cin >> tabela[j].cambio;
-                cout << endl << "Insira o tipo de direção: ";
-                cin >> tabela[j].direcao;
-                cout << endl << "Insira a cor do veículo: ";
-                cin >> tabela[j].cor;
-                cout << endl << "Insira o Nº de portas: ";
-                cin >> tabela[j].portas;
-                
-                // Algoritmo para impedir que o usuário adicione 2 veículos com a mesma placa
-                cout << endl << "Insira a placa: ";
-                cin >> tabela[j].placa;
-                for(i = 0; i < qtdcarros; i++){
-                    if(tabela[i].placa == tabela[j].placa){
-                        vec_duplicado = 1;
+                int vec_jexcl = 0;
+                int pos_vec_excl = 0;
+
+                // Esse looping é feito para confirmar se já foi feita a invalidação de algum veículo no vetor
+                for(i = 0; i < TAM; i++){
+                    if(tabela[i].valido == false){
+                        vec_jexcl = 1;
+                        pos_vec_excl = i;
                     }
                 }
-                while(vec_duplicado != 0){
-                    cout << endl << "A placa que você inseriu já pertence a outro veículo! Insira novamente: ";
-                    cin >> tabela[j].placa;
-                    vec_duplicado = 0;
-                    for(i = 0; i < qtdcarros; i++){
-                        if(tabela[i].placa == tabela[j].placa){
-                            vec_duplicado = 1;
-                        }
-                    } 
-                }
 
-                cout << endl << "Insira o valor do veículo: ";
-                cin >> tabela[j].valor;
+                // Opção para adicionar um veículo, caso nenhuma posição no vetor tenha sido invalidada
+                if(vec_jexcl == 0){
+                    cout << endl << "Incluir um veículo" << endl;
+                    cout << endl << "Insira o modelo: ";
+                    cin >> tabela[j].modelo;
+                    cout << endl << "Insira a marca: ";
+                    cin >> tabela[j].marca;
+                    cout << endl << "Insira o tipo: ";
+                    cin >> tabela[j].tipo;
+                    cout << endl << "Insira o ano: ";
+                    cin >> tabela[j].ano;
+                    cout << endl << "Insira a quilometragem do veículo: ";
+                    cin >> tabela[j].quilometragem;
+                    cout << endl << "Insira a potência: ";
+                    cin >> tabela[j].potencia;
+                    cout << endl << "Insira o combustível: ";
+                    cin >> tabela[j].combustivel;
+                    cout << endl << "Insira o tipo de câmbio: ";
+                    cin >> tabela[j].cambio;
+                    cout << endl << "Insira o tipo de direção: ";
+                    cin >> tabela[j].direcao;
+                    cout << endl << "Insira a cor do veículo: ";
+                    cin >> tabela[j].cor;
+                    cout << endl << "Insira o Nº de portas: ";
+                    cin >> tabela[j].portas;
+                    cout << endl << "Insira a placa: ";
+                    cin >> tabela[j].placa;
+                    cout << endl << "Insira o valor do veículo: ";
+                    cin >> tabela[j].valor;
                 
-                cout << endl << "Veículo adicionado com sucesso!" << endl;
-                qtdcarros++;
-                j++;
-                tabela[j].modelo = "FIM";
+                    cout << endl << "Veículo adicionado com sucesso!" << endl;
+                    qtdcarros++;
+                    j++;
+                    tabela[j].modelo = "FIM";
+                
+                /*Opção para adicionar um veículo no vetor caso alguma posição já tenha sido invalidada,
+                com o novo veículo assumindo a posição do veículo que foi invalidado.*/
+                }else if(vec_jexcl > 0){
+                    cout << endl << "Incluir um veículo" << endl;
+                    tabela[pos_vec_excl].valido = true;
+                    cout << endl << "Insira o modelo: ";
+                    cin >> tabela[pos_vec_excl].modelo;
+                    cout << endl << "Insira a marca: ";
+                    cin >> tabela[pos_vec_excl].marca;
+                    cout << endl << "Insira o tipo: ";
+                    cin >> tabela[pos_vec_excl].tipo;
+                    cout << endl << "Insira o ano: ";
+                    cin >> tabela[pos_vec_excl].ano;
+                    cout << endl << "Insira a quilometragem do veículo: ";
+                    cin >> tabela[pos_vec_excl].quilometragem;
+                    cout << endl << "Insira a potência: ";
+                    cin >> tabela[pos_vec_excl].potencia;
+                    cout << endl << "Insira o combustível: ";
+                    cin >> tabela[pos_vec_excl].combustivel;
+                    cout << endl << "Insira o tipo de câmbio: ";
+                    cin >> tabela[pos_vec_excl].cambio;
+                    cout << endl << "Insira o tipo de direção: ";
+                    cin >> tabela[pos_vec_excl].direcao;
+                    cout << endl << "Insira a cor do veículo: ";
+                    cin >> tabela[pos_vec_excl].cor;
+                    cout << endl << "Insira o Nº de portas: ";
+                    cin >> tabela[pos_vec_excl].portas;
+                    cout << endl << "Insira a placa: ";
+                    cin >> tabela[pos_vec_excl].placa;
+                    cout << endl << "Insira o valor do veículo: ";
+                    cin >> tabela[pos_vec_excl].valor;
+                
+                    cout << endl << "Veículo adicionado com sucesso!" << endl;
+                    qtdcarros++;
+                }
                 break;
             }
             case 3:
@@ -217,7 +251,6 @@ int main(){
                                     }
                                 }
                             }
-                            
                            
                             if(vec_enc == 0){
                                 cout << endl << "Nenhum veículo com essa placa foi encontrado!" << endl;
@@ -237,7 +270,16 @@ int main(){
                             if(exc_vec == 1){
                                 tabela[vec_enc].valido = false;
                                 cout << endl << "O veículo foi excluído com sucesso!" << endl;
-                                qtdcarros--;
+                            }
+                            
+                            qtdcarros = 0;
+                            for(i = 0; i < TAM; i++){
+                                if(tabela[i].valido == true){
+                                    qtdcarros++;
+                                    if(tabela[i].modelo == "FIM"){
+                                        break;
+                                    }
+                                }
                             }
 
                             break;
@@ -312,8 +354,17 @@ int main(){
                             int p_min = 0, p_max = 0, enc_p = 0;
                             cout << endl << "Insira o valor mínimo desejado: ";
                             cin >> p_min;
+                            while(p_min < 0){
+                                cout << endl << "Você inseriu um valor inválido!Insira novamente: ";
+                                p_min;
+                            }
                             cout << endl << "Insira o valor máximo desejado: ";
                             cin >> p_max;
+                            while(p_max < 0){
+                                cout << endl << "Você inseriu um valor inválido!Insira novamente: ";
+                                p_max;
+                            }
+                            cout << endl << "Os veículos encontrados foram: ";
                             for(i = 0; i < qtdcarros; i++){
                                 if(tabela[i].valido == true){
                                     if(tabela[i].valor >= p_min && tabela[i].valor <= p_max){
@@ -335,7 +386,7 @@ int main(){
                                 }
                             }
                             if(enc_p <= 0){
-                                cout << endl << "Nenhum veículo foi encontrado dentro dessa faixa de preço!" << endl;
+                                cout << endl << endl << "Nenhum veículo foi encontrado dentro dessa faixa de preço!" << endl;
                             }
                             
                             break;
@@ -445,6 +496,8 @@ int main(){
                 float juros = pow((1 + taxa_juros), num_prestacoes) * taxa_juros;
                 float parcelas = pow((1 + taxa_juros), num_prestacoes) - 1;
                 float prestacao = valor_mb * (juros / parcelas); 
+                
+                cout << endl << "Saindo por apenas 60 prestações de: R$" << prestacao << endl;
         
                 // Veículo mais caro com direção hidraúlica, câmbio automático + valor do seguro estimado
                 int l = -1;
@@ -507,7 +560,7 @@ int main(){
     // Inserindo o estado atual do banco de dados no programa
     for(i = 0; i < qtdcarros; i++){
         if(tabela[i].valido == true){
-            arquivo_final << endl << tabela[i].modelo;
+            arquivo_final << tabela[i].modelo;
             arquivo_final << " " << tabela[i].marca;
             arquivo_final << " " << tabela[i].tipo;
             arquivo_final << " " << tabela[i].ano;
@@ -519,10 +572,10 @@ int main(){
             arquivo_final << " " << tabela[i].cor;
             arquivo_final << " " << tabela[i].portas;
             arquivo_final << " " << tabela[i].placa;
-            arquivo_final << " " << tabela[i].valor;
+            arquivo_final << " " << tabela[i].valor << endl;
         }
     }
-    arquivo_final << endl << "FIM";
+    arquivo_final << "FIM";
 
     arquivo_final.close();
 
