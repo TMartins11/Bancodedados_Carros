@@ -1,4 +1,3 @@
-
 KA FORD Hatch 2019 34055 1.5 Flex Manual Hidráulica Branco 4 PWE4815 65278
 DUSTER RENAULT SUV 2020 40135 1.6 Flex Automático Elétrica Branco 4 JHE7846 82032
 CAPTUR RENAULT Hatch 2019 39184 2 Flex Automático Elétrica Branco 4 QWE4572 84685
@@ -33,4 +32,5 @@ XC-60 VOLVO SUV 2015 97000 2.4 Gasolina Automático Elétrica Preto 4 MAN7774 92
 CITY HONDA Sedan 2019 38000 1.5 Flex Automático Hidráulica Prata 4 APX6545 90146
 HILUX TOYOTA Pick-up 2018 62800 2.8 Diesel Automático Hidráulica Branca 4 BJX6549 145000
 UNO FIAT Sedan 1997 56000 1.4 Gasolina Manual Elétrica Vinho 2 TAJ8967 43000
+TORO FIAT Pick-up 2018 12000 2.5 Diesel Automático Hidráulica Preto 4 BGT7432 110000
 FIM
